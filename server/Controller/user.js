@@ -79,6 +79,30 @@ class UserController {
             res.status(500).json({ message: "Server error", error: error.message });
         }
     }
+
+    // Verify user token and return user info
+    static async verifyToken(req, res) {
+        try {
+            // The auth middleware already verified the token
+            // and added the user id to req.user
+            const user = await User.findById(req.user._id).select('-password');
+            
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            
+            res.json({ 
+                user: {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    role: user.role
+                }
+            });
+        } catch (error) {
+            res.status(500).json({ message: "Server error", error: error.message });
+        }
+    }
 }
 
 export default UserController;

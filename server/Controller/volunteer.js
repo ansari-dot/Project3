@@ -13,14 +13,14 @@ class VolunteerController {
     //  Create Volunteer (any logged-in user)
     static async createVolunteer(req, res) {
         try {
-            const { firstName, lastName, email, phone, areaOfInterest, availability, timeCommitment, whyJoin } = req.body;
+            const { firstName, lastName, email, phone, areasOfInterest, availability, timeCommitment, whyJoin } = req.body;
 
             const newVolunteer = new Volunteer({
                 firstName,
                 lastName,
                 email,
                 phone,
-                areaOfInterest,
+                areasOfInterest,
                 availability,
                 timeCommitment,
                 whyJoin

@@ -13,7 +13,7 @@ class PartnershipController {
     //  Create Partnership (Any logged-in user can do this)
     static async createPartnership(req, res) {
         try {
-            const { organizationName, organizationType, contactPerson, position, email, phone, partnershipType, description } = req.body;
+            const { organizationName, organizationType, contactPerson, position, email, phone, partnershipTypes, description } = req.body;
 
             const newPartnership = new Partnership({
                 organizationName,
@@ -22,7 +22,7 @@ class PartnershipController {
                 position,
                 email,
                 phone,
-                partnershipType,
+                partnershipTypes,
                 description
             });
 

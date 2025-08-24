@@ -13,13 +13,14 @@ class SponsorshipController {
     //  Create Sponsorship (any logged-in user)
     static async createSponsorship(req, res) {
             try {
-                const { name, contact, email, programOfInterest, sponsorshipLevel, duration, additionalInfo } = req.body;
+                const { organizationName, contactPerson, email, phone, programsOfInterest, sponsorshipLevel, duration, additionalInfo } = req.body;
 
                 const newSponsorship = new Sponsorship({
-                    name,
-                    contact,
+                    organizationName,
+                    contactPerson,
                     email,
-                    programOfInterest,
+                    phone,
+                    programsOfInterest,
                     sponsorshipLevel,
                     duration,
                     additionalInfo

@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
 const sponsorshipSchema = new mongoose.Schema({
-    name: {
+    organizationName: {
         type: String,
         required: true,
         trim: true
     },
-    contact: {
+    contactPerson: {
         type: String,
-        required: true,
+        required: false,
         trim: true
     },
     email: {
@@ -16,21 +16,26 @@ const sponsorshipSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    programOfInterest: {
+    phone: {
+        type: String,
+        required: false,
+        trim: true
+    },
+    programsOfInterest: [{
         type: String,
         required: true,
-    },
+    }],
     sponsorshipLevel: {
         type: String,
-        required: true
+        required: false
     },
     duration: {
         type: String,
-        required: true
+        required: false
     },
     additionalInfo: {
         type: String,
-        required: true
+        required: false
     }
 }, {
     timestamps: true

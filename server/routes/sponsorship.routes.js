@@ -4,13 +4,13 @@ import { auth } from "../middleware/auth.js";
 
 const router = express.Router();
 
-// Create sponsorship (any logged-in user)
-router.post("/sponsorship/add", auth, SponsorshipController.createSponsorship);
+// Create sponsorship (public - no auth required)
+router.post("/sponsorship/add", SponsorshipController.createSponsorship);
 
 //  Get all sponsorships (admin only)
 router.get("/sponsorship/get", auth, SponsorshipController.getAllSponsorships);
 
 // Delete sponsorship (admin only)
-router.delete("sponsorship/delete/:id", auth, SponsorshipController.deleteSponsorship);
+router.delete("/sponsorship/delete/:id", auth, SponsorshipController.deleteSponsorship);
 
 export default router;
