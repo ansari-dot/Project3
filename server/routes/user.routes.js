@@ -14,6 +14,6 @@ router.post("/user/login", UserController.login);
 router.post("/user/logout", auth, UserController.logout);
 
 // 🔹 Verify user token
-router.get("/user/verify", auth, UserController.verifyToken);
+//router.get("/user/verify", auth, UserController.verifyToken);
 
 export default router;
