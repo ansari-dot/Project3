@@ -11,6 +11,6 @@ router.get("/media/get/:id", MediaController.getMediaById);
 // Admin protected
 router.post("/media/add", auth, MediaController.createMedia);
 router.put("/media/update/:id", auth, MediaController.updateMedia);
-router.delete("media/delete/:id", auth, MediaController.deleteMedia);
+router.delete("/media/delete/:id", auth, MediaController.deleteMedia);
 
 export default router;

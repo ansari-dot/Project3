@@ -22,7 +22,7 @@ class MediaController {
                 return res.status(403).json({ message: "Only admin can add media" });
             }
 
-            const { mediaType, heading, team, description, highlight, link } = req.body;
+            const { mediaType, heading, team, description, highlight, link, image, author, category, tags } = req.body;
 
             const newMedia = new Media({
                 mediaType,
@@ -30,7 +30,11 @@ class MediaController {
                 team,
                 description,
                 highlight,
-                link
+                link,
+                image: image || '/placeholder-logo.png',
+                author,
+                category,
+                tags: tags || []
             });
 
             await newMedia.save();

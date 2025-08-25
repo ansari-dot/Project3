@@ -25,6 +25,9 @@ app.use(cors({
   credentials: true
 }));
 
+// Serve uploaded files
+app.use('/uploads', express.static('uploads'));
+
 app.get('/', (req, res) => {
     res.status(200).send('Welcome to the server');
 });
