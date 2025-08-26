@@ -3,17 +3,16 @@ import UserController from "../Controller/user.js";
 import { auth } from "../middleware/auth.js";
 
 const router = express.Router();
-
-// 🔹 Register new user
-router.post("/user/register", UserController.register);
-
-// 🔹 Login user
+//  Login user
 router.post("/user/login", UserController.login);
 
-// 🔹 Logout user
+//  Logout user
 router.post("/user/logout", auth, UserController.logout);
 
-// 🔹 Verify user token
-//router.get("/user/verify", auth, UserController.verifyToken);
+//  Update user profile
+router.put("/user/profile", auth, UserController.updateProfile);
+
+//  Change password
+router.post("/user/change-password", auth, UserController.changePassword);
 
 export default router;

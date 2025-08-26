@@ -29,7 +29,7 @@ class ProgramController {
                     success: false,
                     message: "Only admin can add programs"
                 });
-            }
+            } 
 
             let { name, description, keyFeatures, impact, sustainability } = req.body;
 

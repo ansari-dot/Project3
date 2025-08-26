@@ -46,8 +46,56 @@ class PartnershipController {
                 return res.status(403).json({ message: "Only admin can view all partnerships" });
             }
 
-            const partnerships = await Partnership.find();
+            const { search, status, sort = '-createdAt' } = req.query;
+            let query = {};
+
+            // Search functionality
+            if (search) {
+                const searchRegex = new RegExp(search, 'i');
+                query.$or = [
+                    { organizationName: searchRegex },
+                    { contactPerson: searchRegex },
+                    { email: searchRegex },
+                    { description: searchRegex }
+                ];
+            }
+
+            // Filter by read/unread status
+            if (status && status !== 'all') {
+                query.read = status === 'read';
+            }
+
+            const partnerships = await Partnership.find(query).sort({ createdAt: -1 });
             res.json({ success: true, data: partnerships });
+        } catch (err) {
+            res.status(500).json({ success: false, message: "Server error", error: err.message });
+        }
+    }
+
+    //  Update Partnership Read Status (Admin only)
+    static async setReadStatus(req, res) {
+        try {
+            const { exists, isAdmin } = await PartnershipController.checkAdmin(req.user._id);
+
+            if (!exists) {
+                return res.status(401).json({ message: "User does not exist" });
+            }
+            if (!isAdmin) {
+                return res.status(403).json({ message: "Only admin can update partnership status" });
+            }
+
+            const { read } = req.body;
+            const updated = await Partnership.findByIdAndUpdate(
+                req.params.id,
+                { read: Boolean(read) },
+                { new: true }
+            );
+
+            if (!updated) {
+                return res.status(404).json({ message: "Partnership not found" });
+            }
+
+            res.json({ success: true, message: "Partnership status updated", data: updated });
         } catch (err) {
             res.status(500).json({ success: false, message: "Server error", error: err.message });
         }

@@ -45,8 +45,56 @@ class SponsorshipController {
                 return res.status(403).json({ message: "Only admin can view all sponsorships" });
             }
 
-            const sponsorships = await Sponsorship.find();
+            const { search, status, sort = '-createdAt' } = req.query;
+            let query = {};
+
+            // Search functionality
+            if (search) {
+                const searchRegex = new RegExp(search, 'i');
+                query.$or = [
+                    { organizationName: searchRegex },
+                    { contactPerson: searchRegex },
+                    { email: searchRegex },
+                    { description: searchRegex }
+                ];
+            }
+
+            // Filter by read/unread status
+            if (status && status !== 'all') {
+                query.read = status === 'read';
+            }
+
+            const sponsorships = await Sponsorship.find(query).sort({ createdAt: -1 });
             res.json({ success: true, data: sponsorships });
+        } catch (err) {
+            res.status(500).json({ success: false, message: "Server error", error: err.message });
+        }
+    }
+
+    //  Update Sponsorship Read Status (Admin only)
+    static async setReadStatus(req, res) {
+        try {
+            const { exists, isAdmin } = await SponsorshipController.checkAdmin(req.user._id);
+
+            if (!exists) {
+                return res.status(401).json({ message: "User does not exist" });
+            }
+            if (!isAdmin) {
+                return res.status(403).json({ message: "Only admin can update sponsorship status" });
+            }
+
+            const { read } = req.body;
+            const updated = await Sponsorship.findByIdAndUpdate(
+                req.params.id,
+                { read: Boolean(read) },
+                { new: true }
+            );
+
+            if (!updated) {
+                return res.status(404).json({ message: "Sponsorship not found" });
+            }
+
+            res.json({ success: true, message: "Sponsorship status updated", data: updated });
         } catch (err) {
             res.status(500).json({ success: false, message: "Server error", error: err.message });
         }

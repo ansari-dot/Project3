@@ -37,7 +37,7 @@ class ContactController {
         }
     }
 
-    // Get All Contacts (Admin only)
+    // Get All Contacts with search, sort, and read/unread status (Admin only)
     static async getContacts(req, res) {
         try {
             const { exists, isAdmin } = await ContactController.checkAdmin(req.user._id);
@@ -49,8 +49,46 @@ class ContactController {
                 return res.status(403).json({ message: "Only admin can view all contacts" });
             }
 
-            const contacts = await Contact.find();
+            // Search and filter
+            const { search, status } = req.query;
+            let query = {};
+            if (search) {
+                query.$or = [
+                    { firstName: { $regex: search, $options: "i" } },
+                    { lastName: { $regex: search, $options: "i" } },
+                    { email: { $regex: search, $options: "i" } },
+                    { subject: { $regex: search, $options: "i" } },
+                    { message: { $regex: search, $options: "i" } }
+                ];
+            }
+            if (status === "read") query.read = true;
+            if (status === "unread") query.read = false;
+
+            // Sort by recent first
+            const contacts = await Contact.find(query).sort({ createdAt: -1 });
             res.json({ success: true, data: contacts });
+        } catch (err) {
+            res.status(500).json({ message: "Server error", error: err.message });
+        }
+    }
+
+    // Mark Contact as Read/Unread (Admin only)
+    static async setReadStatus(req, res) {
+        try {
+            const { exists, isAdmin } = await ContactController.checkAdmin(req.user._id);
+            if (!exists) {
+                return res.status(401).json({ message: "User does not exist" });
+            }
+            if (!isAdmin) {
+                return res.status(403).json({ message: "Only admin can update contact status" });
+            }
+            const { id } = req.params;
+            const { read } = req.body;
+            const contact = await Contact.findByIdAndUpdate(id, { read }, { new: true });
+            if (!contact) {
+                return res.status(404).json({ message: "Contact not found" });
+            }
+            res.json({ success: true, data: contact });
         } catch (err) {
             res.status(500).json({ message: "Server error", error: err.message });
         }

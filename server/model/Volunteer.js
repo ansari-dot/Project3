@@ -8,7 +8,8 @@ const volunteerSchema = new mongoose.Schema({
     areasOfInterest: [{ type: String, required: true }],
     availability: { type: String, required: true },
     timeCommitment: { type: String, required: false },
-    whyJoin: { type: String, required: true }
+    whyJoin: { type: String, required: true },
+    read: { type: Boolean, default: false }
 }, { timestamps: true });
 
 const Volunteer = mongoose.model("Volunteer", volunteerSchema);
