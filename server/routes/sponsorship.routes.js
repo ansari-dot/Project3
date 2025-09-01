@@ -11,7 +11,7 @@ router.post("/sponsorship/add", SponsorshipController.createSponsorship);
 router.get("/sponsorship/get", auth, SponsorshipController.getAllSponsorships);
 
 // Update sponsorship read status (Admin only)
-router.patch("/sponsorship/:id/read-status", auth, SponsorshipController.setReadStatus);
+router.patch("/sponsorship/read-status/:id", auth, SponsorshipController.setReadStatus);
 
 // Delete sponsorship (admin only)
 router.delete("/sponsorship/delete/:id", auth, SponsorshipController.deleteSponsorship);

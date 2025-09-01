@@ -13,6 +13,7 @@ import projectRoutes from './routes/project.routes.js';
 import sponsorshipRoutes from './routes/sponsorship.routes.js'
 import volunteerRoutes from './routes/volunteer.routes.js'
 import opportunityRoutes from './routes/opportunity.routes.js'
+import featuredEventRoutes from './routes/featuredEvent.routes.js'
 dotenv.config();
 
 const app = express();
@@ -45,6 +46,7 @@ app.use('/api', projectRoutes)
 app.use('/api', sponsorshipRoutes)
 app.use('/api', volunteerRoutes)
 app.use('/api', opportunityRoutes)
+app.use('/api', featuredEventRoutes)
 
 
 

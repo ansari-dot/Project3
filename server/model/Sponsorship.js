@@ -36,6 +36,10 @@ const sponsorshipSchema = new mongoose.Schema({
     additionalInfo: {
         type: String,
         required: false
+    },
+    read: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
