@@ -21,14 +21,35 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
-app.use(cors({
-  origin: ["http://localhost:3000", "http://localhost:5173"],
+// CORS configuration for production
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.CORS_ORIGIN?.split(',') || ['https://yourdomain.com']
+    : ["http://localhost:3000", "http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  credentials: true
-}));
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // Serve uploaded files
 app.use('/uploads', express.static('uploads'));
+
+// Security middleware for production
+if (process.env.NODE_ENV === 'production') {
+  // Trust proxy for secure cookies
+  app.set('trust proxy', 1);
+  
+  // Security headers
+  app.use((req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    next();
+  });
+}
 
 app.get('/', (req, res) => {
     res.status(200).send('Welcome to the server');
@@ -58,6 +79,19 @@ app.use('/api', featuredEventRoutes)
 // to connect to the database
 connectDB();
 const PORT = process.env.PORT || 4000;
+
+// Error handling for uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled Rejection:', err);
+  process.exit(1);
+});
+
 app.listen(PORT, () => {
-    console.log(`✅ Server running at http://localhost:${PORT}`);
+    console.log(`✅ Server running on port ${PORT}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
 });

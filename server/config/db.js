@@ -1,10 +1,22 @@
 import mongoose from 'mongoose';
-//const uri = 'mongodb+srv://073ansari:ansari@guesthouse.gyhavro.mongodb.net/'
-const uri = "mongodb://localhost:27017/sk"
+
 const connectDB = async() => {
     try {
-        await mongoose.connect(uri);
-        console.log("Connected to MongoDB");
+        // Use production MongoDB URI if available, otherwise fallback to local
+        const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/sk";
+        
+        const options = {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        };
+
+        if (process.env.NODE_ENV === 'production') {
+            options.ssl = true;
+            options.sslValidate = false;
+        }
+
+        await mongoose.connect(uri, options);
+        console.log(`Connected to MongoDB: ${process.env.NODE_ENV === 'production' ? 'Production' : 'Development'}`);
     } catch (error) {
         console.error("Connection error:", error.message);
         process.exit(1);
