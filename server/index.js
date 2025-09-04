@@ -21,34 +21,39 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
-// CORS configuration for production
+    // CORS configuration for production
+    // CORS configuration for production
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.CORS_ORIGIN?.split(',') || ['https://yourdomain.com']
-    : ["http://localhost:3000", "http://localhost:5173"],
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  credentials: true,
-  optionsSuccessStatus: 200
+    origin: process.env.NODE_ENV === 'production' ? ["http://shehryarkhanfoundation.com"] // your frontend domain
+        :
+        ["http://localhost:3000", "http://localhost:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true,
+    optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
+
+// Handle preflight OPTIONS requests globally
+app.options("*", cors(corsOptions));
+
 
 // Serve uploaded files
 app.use('/uploads', express.static('uploads'));
 
 // Security middleware for production
 if (process.env.NODE_ENV === 'production') {
-  // Trust proxy for secure cookies
-  app.set('trust proxy', 1);
-  
-  // Security headers
-  app.use((req, res, next) => {
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-Frame-Options', 'DENY');
-    res.setHeader('X-XSS-Protection', '1; mode=block');
-    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-    next();
-  });
+    // Trust proxy for secure cookies
+    app.set('trust proxy', 1);
+
+    // Security headers
+    app.use((req, res, next) => {
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+        res.setHeader('X-Frame-Options', 'DENY');
+        res.setHeader('X-XSS-Protection', '1; mode=block');
+        res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+        next();
+    });
 }
 
 app.get('/', (req, res) => {
@@ -57,8 +62,8 @@ app.get('/', (req, res) => {
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-    res.status(200).json({ 
-        status: 'OK', 
+    res.status(200).json({
+        status: 'OK',
         timestamp: new Date().toISOString(),
         environment: process.env.NODE_ENV || 'development',
         uptime: process.uptime()
@@ -92,13 +97,13 @@ const PORT = process.env.PORT || 4000;
 
 // Error handling for uncaught exceptions
 process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
-  process.exit(1);
+    console.error('Uncaught Exception:', err);
+    process.exit(1);
 });
 
 process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err);
-  process.exit(1);
+    console.error('Unhandled Rejection:', err);
+    process.exit(1);
 });
 
 app.listen(PORT, () => {
