@@ -24,12 +24,20 @@ app.use(cookieParser())
     // CORS configuration for production
     // CORS configuration for production
 
-app.use(cors({
-    origin: "http://shehryarkhanfoundation.com", // your frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-}));
-app.use(cors())
+// CORS configuration for production
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'production' 
+        ? ["http://shehryarkhanfoundation.com", "https://shehryarkhanfoundation.com"] 
+        : ["http://localhost:3000", "http://localhost:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight OPTIONS requests globally
+app.options("*", cors(corsOptions));
 
 // Serve uploaded files
 app.use('/uploads', express.static('uploads'));
