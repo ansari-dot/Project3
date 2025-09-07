@@ -15,7 +15,7 @@ const ContactPage = () => {
 
   const [submitting, setSubmitting] = useState(false);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+  const API_URL = import.meta.env.VITE_API_URL ||  'https://shehryarkhanfoundation.com/api';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

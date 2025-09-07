@@ -56,7 +56,7 @@ const LoginPage = () => {
     setIsLoading(true);
     
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+      const API_URL = import.meta.env.VITE_API_URL || 'https://shehryarkhanfoundation.com/api';
       
       // Make API call to login
       const response = await axios.post(`${API_URL}/user/login`, {

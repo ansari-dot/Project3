@@ -4,21 +4,22 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 // If you need to set a base URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+const API_URL =
+    import.meta.env.VITE_API_URL;
 axios.defaults.baseURL = API_URL;
-
+//|| 'http://localhost:4000/api'
 // Add a request interceptor to set the Authorization header if token exists
 axios.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
 );
 
 export default axios;
