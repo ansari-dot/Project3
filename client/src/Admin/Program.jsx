@@ -22,7 +22,7 @@ const Program = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState('/placeholder-logo.png');
   
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://shehryarkhanfoundation.com/api';
 
   // Fetch programs
   const fetchPrograms = async () => {

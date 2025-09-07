@@ -7,7 +7,7 @@ import axios from 'axios';
 const AdminLayout = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://shehryarkhanfoundation.com/api';
 
   // Check if user is authenticated as admin
   useEffect(() => {

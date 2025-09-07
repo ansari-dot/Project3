@@ -9,7 +9,7 @@ const Contact = () => {
   const [showModal, setShowModal] = useState(false);
 
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://shehryarkhanfoundation.com/api';
 
   // Fetch all contact submissions
   const fetchContacts = async () => {
