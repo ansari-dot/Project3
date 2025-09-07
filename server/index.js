@@ -29,6 +29,9 @@ const allowedOrigins = [
     "http://localhost:3000",
     "http://localhost:5173",
     "https://shehryarkhanfoundation.com",
+    "https://shehryarkhanfoundation.com",
+    "https://www.shehryarkhanfoundation.com",
+    "https://api.shehryarkhanfoundation.com",
 ];
 
 const corsOptions = {
