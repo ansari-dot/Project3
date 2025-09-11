@@ -24,27 +24,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ✅ Hardcoded CORS origins (no .env needed)
-const allowedOrigins = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "https://shehryarkhanfoundation.com",
-    "https://www.shehryarkhanfoundation.com",
-];
-
-const corsOptions = {
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    credentials: true,
-};
-
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: "https://shehryarkhanfoundation.com",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
 
 // Serve uploaded files
 app.use('/uploads', express.static('uploads'));
