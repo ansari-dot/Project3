@@ -23,9 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 // CORS configuration for production
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.CORS_ORIGIN?.split(',') || ['https://yourdomain.com']
-    : ["http://localhost:3000", "http://localhost:5173"],
+  origin: process.env.FRONTEND_URL,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true,
   optionsSuccessStatus: 200
@@ -78,7 +76,6 @@ app.use('/api', featuredEventRoutes)
 
 // to connect to the database
 connectDB();
-const PORT = process.env.PORT || 4000;
 
 // Error handling for uncaught exceptions
 process.on('uncaughtException', (err) => {
@@ -91,7 +88,6 @@ process.on('unhandledRejection', (err) => {
   process.exit(1);
 });
 
-app.listen(PORT, () => {
-    console.log(`✅ Server running on port ${PORT}`);
-    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+app.listen(4000, "0.0.0.0", () => {
+  console.log( `Server running on http://localhost:4000` );
 });

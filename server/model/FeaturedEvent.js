@@ -21,10 +21,10 @@ const featuredEventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    image: {
+    images: [{
         type: String,
         default: '/placeholder-logo.png'
-    },
+    }],
     highlights: {
         type: [String],
         default: []

@@ -22,7 +22,7 @@ class FeaturedEventController {
                 return res.status(403).json({ message: "Only admin can add featured events" });
             }
 
-            const { title, description, date, time, location, image, highlights, stats, registrationLink } = req.body;
+            const { title, description, date, time, location, images, highlights, stats, registrationLink } = req.body;
 
             const newFeaturedEvent = new FeaturedEvent({
                 title,
@@ -30,7 +30,7 @@ class FeaturedEventController {
                 date,
                 time,
                 location,
-                image: image || '/placeholder-logo.png',
+                images: images || ['/placeholder-logo.png'],
                 highlights: highlights || [],
                 stats: stats || {
                     speakers: 0,
